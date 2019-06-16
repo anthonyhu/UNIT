@@ -198,7 +198,7 @@ class MUNIT_Trainer(nn.Module):
         torch.save({'a': self.dis_a.state_dict(), 'b': self.dis_b.state_dict()}, dis_name)
         torch.save({'gen': self.gen_opt.state_dict(), 'dis': self.dis_opt.state_dict()}, opt_name)
 
-
+import numpy as np
 class UNIT_Trainer(nn.Module):
     def __init__(self, hyperparameters):
         super(UNIT_Trainer, self).__init__()
@@ -209,6 +209,9 @@ class UNIT_Trainer(nn.Module):
         self.dis_a = MsImageDis(hyperparameters['input_dim_a'], hyperparameters['dis'])  # discriminator for domain a
         self.dis_b = MsImageDis(hyperparameters['input_dim_b'], hyperparameters['dis'])  # discriminator for domain b
         self.instancenorm = nn.InstanceNorm2d(512, affine=False)
+
+        print('gen_a params', sum([np.prod(p.size()) for p in self.gen_a.parameters()]))
+        print('dis_a params', sum([np.prod(p.size()) for p in self.dis_a.parameters()]))
 
         # Setup the optimizers
         beta1 = hyperparameters['beta1']
